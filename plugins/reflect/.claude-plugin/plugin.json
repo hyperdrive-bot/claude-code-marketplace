@@ -1,0 +1,12 @@
+{
+  "name": "reflect",
+  "description": "Analyze accumulated session learnings and promote recurring patterns to durable rules. Forked-context analysis returns proposals; parent conversation writes approved rules to .claude/rules/ or global CLAUDE.md",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/reflect",
+  "keywords": ["reflection", "rules", "learning", "self-improvement", "memory", "patterns"],
+  "category": "productivity"
+}

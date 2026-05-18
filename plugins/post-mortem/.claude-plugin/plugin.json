@@ -1,0 +1,12 @@
+{
+  "name": "post-mortem",
+  "description": "Branded post-mortem PDF generator with smoking-gun evidence rigor, banned-hedging linter, and a Chrome-headless render loop that detects page overflow",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/post-mortem",
+  "keywords": ["post-mortem", "incident", "rca", "pdf", "documentation", "5-whys", "evidence", "rigor"],
+  "category": "documentation"
+}
