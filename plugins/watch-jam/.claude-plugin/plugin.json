@@ -1,0 +1,12 @@
+{
+  "name": "watch-jam",
+  "description": "Watch a jam.dev bug recording: downloads the raw WebM via anonymous GraphQL, extracts evenly-spaced key frames with ffmpeg, and feeds them to Claude's vision so you can describe what the user actually saw",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/watch-jam",
+  "keywords": ["jam", "jam.dev", "bug-reports", "video", "screenshots", "debugging", "qa"],
+  "category": "development"
+}

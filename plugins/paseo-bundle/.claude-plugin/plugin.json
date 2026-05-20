@@ -1,0 +1,12 @@
+{
+  "name": "paseo-bundle",
+  "description": "Multi-agent orchestration skills for the Paseo daemon. Bundles: paseo (reference), paseo-epic (heavy-ceremony orchestration), paseo-committee (root-cause analysis pair), paseo-advisor (second opinion), paseo-loop (worker/verifier cycle), paseo-handoff (context-rich task transfer)",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/paseo-bundle",
+  "keywords": ["paseo", "multi-agent", "orchestration", "worktrees", "committee", "advisor", "loop"],
+  "category": "development"
+}

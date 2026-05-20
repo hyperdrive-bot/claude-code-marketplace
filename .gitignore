@@ -1,0 +1,17 @@
+.DS_Store
+*.pdf
+/tmp/
+node_modules/
+.env
+.env.local
+*.log
+
+# Local renders from post-mortem / proposal pipelines
+postmortems/
+proposals/
+
+# Editor cruft
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,12 @@
+{
+  "name": "transcript",
+  "description": "Transcribe audio files (mp3, wav, m4a, ogg, opus, webm, flac, mp4) to text via OpenAI Whisper API. Handles WhatsApp voice notes by auto-converting opus to mp3 via ffmpeg",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/transcript",
+  "keywords": ["audio", "transcription", "whisper", "openai", "voice-notes", "whatsapp"],
+  "category": "productivity"
+}
