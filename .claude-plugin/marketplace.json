@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "claude-code-marketplace",
+  "name": "hyperdrive-bot",
   "description": "AI dev tools battle-tested in production. Skills for post-mortem PDFs with smoking-gun rigor, multi-agent orchestration via Paseo, session reflection, audio transcription, and Jam.dev bug recording analysis.",
   "owner": {
     "name": "hyperdrive.bot",

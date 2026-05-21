@@ -16,11 +16,11 @@ This is a [Claude Code plugin marketplace](https://docs.claude.com/claude-code/p
 Then install whichever plugins you want:
 
 ```bash
-/plugin install post-mortem@claude-code-marketplace
-/plugin install reflect@claude-code-marketplace
-/plugin install transcript@claude-code-marketplace
-/plugin install watch-jam@claude-code-marketplace
-/plugin install paseo-bundle@claude-code-marketplace
+/plugin install post-mortem@hyperdrive-bot
+/plugin install reflect@hyperdrive-bot
+/plugin install transcript@hyperdrive-bot
+/plugin install watch-jam@hyperdrive-bot
+/plugin install paseo-bundle@hyperdrive-bot
 ```
 
 ---
