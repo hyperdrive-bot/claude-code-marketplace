@@ -36,6 +36,9 @@
     --transcript: #06B6D4;
     --watch-jam: #EC4899;
     --paseo: #10B981;
+    --branded-pdf: #F97316;
+    --diagram-design: #3B82F6;
+    --session-naming: #14B8A6;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -391,7 +394,7 @@
     hyperdrive-bot/marketplace
   </div>
   <h1>Claude Code skills, forged in<br><span class="accent">production fire.</span></h1>
-  <p>5 battle-tested plugins extracted from real production work shipping multi-tenant SaaS on AWS. Smoking-gun post-mortem PDFs, multi-agent orchestration via Paseo, session reflection, audio transcription, and Jam.dev recording analysis. No theory &mdash; every plugin earned its place in our daily workflow.</p>
+  <p>8 battle-tested plugins extracted from real production work shipping multi-tenant SaaS on AWS. Smoking-gun post-mortem PDFs, branded multi-page documents, 13 diagram types, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, and auto session naming. No theory &mdash; every plugin earned its place in our daily workflow.</p>
   <div class="hero-install" onclick="navigator.clipboard.writeText('/plugin marketplace add hyperdrive-bot/marketplace')">
     <span><span class="dollar">/</span> plugin marketplace add hyperdrive-bot/marketplace</span>
     <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -411,7 +414,7 @@
 <!-- PLUGINS -->
 <section id="plugins">
   <div class="section-label">01 &mdash; The Plugins</div>
-  <h2>5 plugins. Zero filler.</h2>
+  <h2>8 plugins. Zero filler.</h2>
   <p class="section-desc">Each plugin solves a specific recurring pain in our workflow. They're independent &mdash; install one or all. Every skill carries the opinions we earned from production scars.</p>
 
   <div class="plugin-grid">
@@ -524,13 +527,77 @@
       <span class="plugin-cmd">/plugin install paseo-bundle@hyperdrive-bot</span>
     </div>
 
+    <!-- BRANDED-PDF -->
+    <div class="plugin-card" style="--plugin-color: var(--branded-pdf);">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(249, 115, 22, 0.12);">&#128209;</div>
+        <div>
+          <div class="plugin-name">branded-pdf</div>
+          <div class="plugin-tagline">Any multi-page branded PDF, with a brand wizard</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Same render-and-overflow engine as <code>post-mortem</code>, generic content shape. First-run <strong>brand wizard</strong> collects colors, fonts, and logo via <code>AskUserQuestion</code>, generates <code>./templates/&lt;name&gt;/</code>, and reuses it across all your documents. Section components: <code>.metrics</code>, <code>.timeline</code>, <code>.phase-card</code>, <code>.highlight-box</code>, <code>.check-list</code>, tables, badges. Ships with a neutral default for zero-config first use.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">brand-wizard</span>
+        <span class="plugin-tag">multi-page</span>
+        <span class="plugin-tag">overflow-detect</span>
+        <span class="plugin-tag">colors/fonts/logo</span>
+      </div>
+      <span class="plugin-cmd">/plugin install branded-pdf@hyperdrive-bot</span>
+    </div>
+
+    <!-- DIAGRAM-DESIGN -->
+    <div class="plugin-card" style="--plugin-color: var(--diagram-design);">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(59, 130, 246, 0.12);">&#128208;</div>
+        <div>
+          <div class="plugin-name">diagram-design</div>
+          <div class="plugin-tagline">13 diagram types, editorial design system</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Standalone HTML+SVG diagrams: architecture, flowchart, sequence, state machine, ER, timeline, swimlane, quadrant, nested, tree, layer stack, venn, pyramid. Neutral editorial skin out of the box, plus a first-run gate that prompts you to customize the style guide from your brand site. Complexity budget: target density 4/10 &mdash; earn every node, every line.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">13-types</span>
+        <span class="plugin-tag">html+svg</span>
+        <span class="plugin-tag">style-guide</span>
+        <span class="plugin-tag">sketchy-variant</span>
+      </div>
+      <span class="plugin-cmd">/plugin install diagram-design@hyperdrive-bot</span>
+    </div>
+
+    <!-- SESSION-NAMING -->
+    <div class="plugin-card" style="--plugin-color: var(--session-naming); grid-column: 1 / -1;">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(20, 184, 166, 0.12);">&#127989;&#65039;</div>
+        <div>
+          <div class="plugin-name">session-naming</div>
+          <div class="plugin-tagline">5 hooks: auto-name sessions, prefix done-, nudge /reflect</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Auto-names Claude Code sessions from conversation topic. After 3 unnamed exchanges, forces a rename. Detects exit keywords (<code>bye</code>, <code>tchau</code>, <code>done</code>, ...) and prefixes <code>done-</code> on the session name. Nudges <code>/reflect</code> every 10 sessions. Hooks: <strong>SessionStart</strong> (inject context + counter), <strong>UserPromptSubmit</strong> (auto-rename + exit detection), <strong>SessionEnd</strong> (final done- prefix). Plus a <code>session-rename.sh</code> utility that updates the JSONL <code>custom-title</code> record + the <code>sessions-index</code> so <code>/resume</code> picks up the new name.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">SessionStart</span>
+        <span class="plugin-tag">UserPromptSubmit</span>
+        <span class="plugin-tag">SessionEnd</span>
+        <span class="plugin-tag">auto-rename</span>
+        <span class="plugin-tag">reflect-nudge</span>
+      </div>
+      <span class="plugin-cmd">/plugin install session-naming@hyperdrive-bot</span>
+    </div>
+
   </div>
 </section>
 
 <!-- INSTALL -->
 <section id="install">
   <div class="section-label">02 &mdash; Installation</div>
-  <h2>One command. Five plugins available.</h2>
+  <h2>One command. Eight plugins available.</h2>
   <p class="section-desc">Claude Code's native plugin system. No npm install, no global config, no postinstall scripts &mdash; just point at the marketplace and pick what you want.</p>
 
   <div class="steps">
@@ -541,7 +608,7 @@
       </div>
       <div class="step-body">
         <pre><code><span class="code-command">/plugin marketplace add hyperdrive-bot/marketplace</span></code></pre>
-        <p>Claude Code clones the repo under <code>~/.claude/plugins/marketplaces/</code> and indexes the 5 plugins.</p>
+        <p>Claude Code clones the repo under <code>~/.claude/plugins/marketplaces/</code> and indexes the 8 plugins.</p>
       </div>
     </div>
     <div class="step">
@@ -555,7 +622,10 @@
 <span class="code-command">/plugin install reflect@hyperdrive-bot</span>
 <span class="code-command">/plugin install transcript@hyperdrive-bot</span>
 <span class="code-command">/plugin install watch-jam@hyperdrive-bot</span>
-<span class="code-command">/plugin install paseo-bundle@hyperdrive-bot</span></code></pre>
+<span class="code-command">/plugin install paseo-bundle@hyperdrive-bot</span>
+<span class="code-command">/plugin install branded-pdf@hyperdrive-bot</span>
+<span class="code-command">/plugin install diagram-design@hyperdrive-bot</span>
+<span class="code-command">/plugin install session-naming@hyperdrive-bot</span></code></pre>
       </div>
     </div>
     <div class="step">
@@ -626,15 +696,19 @@
   <div class="roadmap">
     <div class="roadmap-item">
       <div class="roadmap-version">v0.1</div>
-      <p><strong>Shipped &mdash; 5 plugins.</strong> post-mortem, reflect, transcript, watch-jam, paseo-bundle. You're looking at it.</p>
+      <p><strong>Shipped &mdash; 5 plugins.</strong> post-mortem, reflect, transcript, watch-jam, paseo-bundle.</p>
     </div>
     <div class="roadmap-item">
       <div class="roadmap-version">v0.2</div>
-      <p><strong>Hooks &amp; rules.</strong> Session naming, checkpoint stop-hook, and a generic-rules plugin (Lambda async patterns, CFN deletion-policy hygiene, git safety) extracted from real incident-driven rules.</p>
+      <p><strong>Shipped &mdash; 3 plugins.</strong> branded-pdf (PDF engine + brand wizard), diagram-design (13 diagram types), session-naming (5 hooks). You're looking at the result.</p>
     </div>
     <div class="roadmap-item">
       <div class="roadmap-version">v0.3</div>
-      <p><strong>BMAD-agent bundle.</strong> Customized BMAD personas with full operational knowledge baked in &mdash; not theoretical roles.</p>
+      <p><strong>Rules plugin.</strong> Generic Lambda async patterns, CFN deletion-policy hygiene, git safety guards, npm platform-deps gotchas &mdash; extracted from real incident-driven rules.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-version">v0.3</div>
+      <p><strong>BMAD-extras.</strong> Marra-customized BMAD personas not in <code>@hyperdrive.bot/bmad-sls-react</code> &mdash; Tiririca (BS detector), Elara (FinOps), Spike (Remotion video), Braga (security review), and more.</p>
     </div>
     <div class="roadmap-item">
       <div class="roadmap-version">v1.0</div>

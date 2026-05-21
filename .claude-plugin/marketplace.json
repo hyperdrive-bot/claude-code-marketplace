@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "hyperdrive-bot",
-  "description": "AI dev tools battle-tested in production. Skills for post-mortem PDFs with smoking-gun rigor, multi-agent orchestration via Paseo, session reflection, audio transcription, and Jam.dev bug recording analysis.",
+  "description": "AI dev tools battle-tested in production. Plugins for branded PDFs, smoking-gun post-mortems, technical diagrams, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, and auto session naming.",
   "owner": {
     "name": "hyperdrive.bot",
     "url": "https://github.com/hyperdrive-bot"
@@ -41,6 +41,27 @@
       "description": "Multi-agent orchestration skills for the Paseo daemon: epic (heavy-ceremony), committee (root-cause pair), advisor (second opinion), loop (worker/verifier cycle), handoff (context-rich transfer).",
       "category": "development",
       "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/paseo-bundle"
+    },
+    {
+      "name": "branded-pdf",
+      "source": "./plugins/branded-pdf",
+      "description": "Generate any multi-page branded PDF (proposals, briefings, executive summaries, reports) with a colors/fonts/logo wizard for brand setup. Same render-and-overflow engine as post-mortem, generic content shape.",
+      "category": "documentation",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/branded-pdf"
+    },
+    {
+      "name": "diagram-design",
+      "source": "./plugins/diagram-design",
+      "description": "Create 13 types of technical and product diagrams (architecture, flowchart, sequence, ER, state machine, timeline, swimlane, quadrant, nested, tree, layer stack, venn, pyramid) as standalone HTML+SVG with a first-run brand-style gate.",
+      "category": "documentation",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/diagram-design"
+    },
+    {
+      "name": "session-naming",
+      "source": "./plugins/session-naming",
+      "description": "Auto-name Claude Code sessions from conversation topic, prefix 'done-' on natural exit, and nudge /reflect every 10 sessions. Five SessionStart/UserPromptSubmit/SessionEnd hooks plus a rename utility.",
+      "category": "productivity",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/session-naming"
     }
   ]
 }

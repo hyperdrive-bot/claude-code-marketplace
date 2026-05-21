@@ -1,0 +1,12 @@
+{
+  "name": "session-naming",
+  "description": "Auto-name Claude Code sessions based on conversation topic, prefix 'done-' on exit, and nudge /reflect periodically. Five hooks plus a rename utility.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/session-naming",
+  "keywords": ["session", "naming", "hooks", "auto-rename", "reflect", "workflow"],
+  "category": "productivity"
+}
