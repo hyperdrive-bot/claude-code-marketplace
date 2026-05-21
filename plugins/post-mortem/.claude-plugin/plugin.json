@@ -6,7 +6,7 @@
     "name": "Marcelo Marra",
     "url": "https://github.com/hyperdrive-bot"
   },
-  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/post-mortem",
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/post-mortem",
   "keywords": ["post-mortem", "incident", "rca", "pdf", "documentation", "5-whys", "evidence", "rigor"],
   "category": "documentation"
 }

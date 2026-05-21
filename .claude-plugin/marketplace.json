@@ -12,35 +12,35 @@
       "source": "./plugins/post-mortem",
       "description": "Branded post-mortem PDF generator with smoking-gun evidence rigor, banned-hedging linter, and a Chrome-headless render loop that detects page overflow.",
       "category": "documentation",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/post-mortem"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/post-mortem"
     },
     {
       "name": "reflect",
       "source": "./plugins/reflect",
       "description": "Analyze accumulated session learnings and promote recurring patterns to durable rules. Forked-context analysis returns proposals; parent conversation writes approved rules.",
       "category": "productivity",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/reflect"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/reflect"
     },
     {
       "name": "transcript",
       "source": "./plugins/transcript",
       "description": "Transcribe audio files (mp3, wav, m4a, ogg, opus, webm, flac, mp4) to text via OpenAI Whisper API. Auto-converts opus to mp3 via ffmpeg for WhatsApp voice notes.",
       "category": "productivity",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/transcript"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/transcript"
     },
     {
       "name": "watch-jam",
       "source": "./plugins/watch-jam",
       "description": "Watch a jam.dev bug recording: downloads the raw WebM via anonymous GraphQL, extracts evenly-spaced key frames with ffmpeg, and feeds them to Claude's vision.",
       "category": "development",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/watch-jam"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/watch-jam"
     },
     {
       "name": "paseo-bundle",
       "source": "./plugins/paseo-bundle",
       "description": "Multi-agent orchestration skills for the Paseo daemon: epic (heavy-ceremony), committee (root-cause pair), advisor (second opinion), loop (worker/verifier cycle), handoff (context-rich transfer).",
       "category": "development",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/paseo-bundle"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/paseo-bundle"
     }
   ]
 }

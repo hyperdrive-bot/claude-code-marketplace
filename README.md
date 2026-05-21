@@ -1,4 +1,4 @@
-# claude-code-marketplace
+# hyperdrive.bot — Claude Code plugins marketplace
 
 > **AI dev tools, battle-tested in production.**
 > Skills built and used daily by a working team — shared for the rest of the Claude Code community.
@@ -10,7 +10,7 @@ This is a [Claude Code plugin marketplace](https://docs.claude.com/claude-code/p
 ## Install
 
 ```bash
-/plugin marketplace add hyperdrive-bot/claude-code-marketplace
+/plugin marketplace add hyperdrive-bot/marketplace
 ```
 
 Then install whichever plugins you want:

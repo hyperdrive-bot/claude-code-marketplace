@@ -6,7 +6,7 @@
     "name": "Marcelo Marra",
     "url": "https://github.com/hyperdrive-bot"
   },
-  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/reflect",
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/reflect",
   "keywords": ["reflection", "rules", "learning", "self-improvement", "memory", "patterns"],
   "category": "productivity"
 }
