@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>claude-code-marketplace — Battle-Tested Plugins for Claude Code</title>
+<meta name="description" content="5 production-tested plugins for Claude Code: smoking-gun post-mortem PDFs, multi-agent orchestration via Paseo, session reflection, audio transcription, and Jam.dev recording analysis.">
+<meta property="og:title" content="claude-code-marketplace — Battle-Tested Plugins for Claude Code">
+<meta property="og:description" content="5 production-tested plugins for Claude Code, published under the @hyperdrive.bot scope. No theory — every plugin earned its place in our daily workflow.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/hyperdrive-bot/claude-code-marketplace">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #1F1F24;
+    --bg-secondary: #27272D;
+    --bg-tertiary: #35353D;
+    --bg-card: #2A2A32;
+    --accent: #F59E0B;
+    --accent-dim: #D97706;
+    --accent-glow: rgba(245, 158, 11, 0.12);
+    --accent-glow-strong: rgba(245, 158, 11, 0.25);
+    --text-primary: #F0F0F5;
+    --text-secondary: #A0A0B0;
+    --text-muted: #737380;
+    --border: #484854;
+    --border-subtle: #35353D;
+    --code-bg: #1A1A20;
+    --success: #28F5BE;
+    --warning: #F5C728;
+    --info: #5B8DEF;
+    --post-mortem: #F59E0B;
+    --reflect: #8B5CF6;
+    --transcript: #06B6D4;
+    --watch-jam: #EC4899;
+    --paseo: #10B981;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(31, 31, 36, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 2rem; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .nav-brand {
+    display: flex; align-items: center; gap: 0.75rem;
+    text-decoration: none; color: var(--text-primary);
+  }
+  .nav-brand span {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600; font-size: 0.95rem; letter-spacing: -0.02em;
+  }
+  .nav-brand .accent { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500;
+    padding: 0.4rem 0.75rem; border-radius: 6px;
+    transition: color 0.2s, background 0.2s; cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--accent); background: var(--accent-glow); }
+
+  /* --- HERO --- */
+  .hero {
+    padding: 9rem 2rem 5rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--accent-glow);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; font-weight: 500;
+    padding: 0.35rem 0.85rem; border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: 3rem; font-weight: 700;
+    line-height: 1.15; letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero p {
+    color: var(--text-secondary); font-size: 1.15rem;
+    line-height: 1.65; max-width: 640px; margin: 0 auto 2rem;
+  }
+
+  .hero-install {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.65rem 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem; color: var(--text-primary);
+    cursor: pointer; transition: border-color 0.2s;
+  }
+  .hero-install:hover { border-color: var(--accent); }
+  .hero-install .dollar { color: var(--accent); user-select: none; }
+  .hero-install .copy-icon { color: var(--text-muted); transition: color 0.2s; }
+  .hero-install:hover .copy-icon { color: var(--accent); }
+
+  .hero-stack {
+    display: flex; justify-content: center; gap: 0.5rem;
+    margin-top: 1.5rem; flex-wrap: wrap;
+  }
+  .stack-tag {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px; padding: 0.25rem 0.65rem;
+    font-size: 0.72rem; font-weight: 500;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* --- SECTIONS --- */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 4rem 0; }
+  section + section { border-top: 1px solid var(--border-subtle); }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    font-size: 1.85rem; font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 0.75rem;
+  }
+
+  .section-desc {
+    color: var(--text-secondary); font-size: 1rem;
+    margin-bottom: 2.5rem; max-width: 650px;
+  }
+
+  /* --- PLUGIN CARDS --- */
+  .plugin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .plugin-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.3s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .plugin-card:hover {
+    border-color: var(--border);
+    transform: translateY(-2px);
+  }
+  .plugin-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--plugin-color);
+  }
+
+  .plugin-card.flagship {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(245, 158, 11, 0.05) 100%);
+    border-color: rgba(245, 158, 11, 0.2);
+  }
+  .plugin-card.flagship::before { height: 4px; }
+
+  .plugin-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .plugin-icon {
+    font-size: 1.5rem;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent-glow);
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .plugin-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .plugin-tagline {
+    font-size: 0.78rem; color: var(--text-muted);
+  }
+
+  .plugin-desc {
+    color: var(--text-secondary); font-size: 0.88rem;
+    line-height: 1.6; margin-bottom: 0.75rem;
+  }
+
+  .plugin-tags {
+    display: flex; gap: 0.35rem; flex-wrap: wrap;
+  }
+  .plugin-tag {
+    background: var(--bg-tertiary); border-radius: 4px;
+    padding: 0.15rem 0.45rem; font-size: 0.68rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .plugin-cmd {
+    display: inline-block; margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: var(--accent);
+    background: var(--code-bg);
+    padding: 0.2rem 0.55rem; border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* --- INSTALL STEPS --- */
+  .steps { display: flex; flex-direction: column; gap: 1.25rem; }
+  .step {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px; padding: 1.5rem 1.75rem;
+    transition: border-color 0.2s;
+  }
+  .step:hover { border-color: var(--border); }
+  .step-header {
+    display: flex; align-items: flex-start; gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .step-number {
+    flex-shrink: 0; width: 28px; height: 28px;
+    background: var(--accent-glow);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; font-weight: 700; color: var(--accent);
+  }
+  .step h3 { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+  .step-body {
+    margin-left: 2.75rem; color: var(--text-secondary); font-size: 0.9rem;
+  }
+  .step-body p { margin-bottom: 0.75rem; }
+
+  /* --- CODE --- */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px; padding: 1rem 1.25rem;
+    overflow-x: auto; margin: 0.75rem 0;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem; line-height: 1.7;
+  }
+  pre code { color: var(--text-primary); }
+  :not(pre) > code {
+    background: var(--bg-tertiary);
+    padding: 0.15rem 0.4rem; border-radius: 4px;
+    font-size: 0.82rem; color: var(--accent);
+  }
+  .code-comment { color: var(--text-muted); }
+  .code-command { color: var(--accent); }
+
+  /* --- TIP --- */
+  .tip {
+    background: var(--accent-glow);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.85rem 1.15rem; margin: 1rem 0;
+    font-size: 0.85rem; color: var(--text-primary);
+  }
+  .tip strong { color: var(--accent); }
+  .tip a { color: var(--accent); }
+
+  /* --- BATTLE SCARS --- */
+  .scars-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .scar {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px; padding: 1.25rem 1.5rem;
+  }
+  .scar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  .scar p {
+    font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;
+  }
+
+  /* --- ROADMAP --- */
+  .roadmap { display: flex; flex-direction: column; gap: 0.75rem; }
+  .roadmap-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px; padding: 1rem 1.25rem;
+  }
+  .roadmap-version {
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 6px;
+    padding: 0.2rem 0.6rem;
+    min-width: 50px; text-align: center;
+  }
+  .roadmap-item p {
+    font-size: 0.88rem; color: var(--text-secondary); margin: 0;
+  }
+  .roadmap-item strong { color: var(--text-primary); }
+
+  /* --- FOOTER --- */
+  footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 2.5rem 2rem; text-align: center;
+    color: var(--text-muted); font-size: 0.8rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2.2rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .container { padding: 0 1.25rem; }
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .plugin-grid { grid-template-columns: 1fr; }
+    .plugin-card.flagship { grid-column: auto; }
+    .scars-grid { grid-template-columns: 1fr; }
+    .step-body { margin-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <span>claude-code-<span class="accent">marketplace</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#plugins">Plugins</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#opinions">Opinions</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="https://github.com/hyperdrive-bot/claude-code-marketplace">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    hyperdrive-bot/claude-code-marketplace
+  </div>
+  <h1>Claude Code skills, forged in<br><span class="accent">production fire.</span></h1>
+  <p>5 battle-tested plugins extracted from real production work shipping multi-tenant SaaS on AWS. Smoking-gun post-mortem PDFs, multi-agent orchestration via Paseo, session reflection, audio transcription, and Jam.dev recording analysis. No theory &mdash; every plugin earned its place in our daily workflow.</p>
+  <div class="hero-install" onclick="navigator.clipboard.writeText('/plugin marketplace add hyperdrive-bot/claude-code-marketplace')">
+    <span><span class="dollar">/</span> plugin marketplace add hyperdrive-bot/claude-code-marketplace</span>
+    <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+  </div>
+  <div class="hero-stack">
+    <span class="stack-tag">Claude Code</span>
+    <span class="stack-tag">Skills</span>
+    <span class="stack-tag">Plugins</span>
+    <span class="stack-tag">Multi-Agent</span>
+    <span class="stack-tag">Paseo</span>
+    <span class="stack-tag">MIT</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- PLUGINS -->
+<section id="plugins">
+  <div class="section-label">01 &mdash; The Plugins</div>
+  <h2>5 plugins. Zero filler.</h2>
+  <p class="section-desc">Each plugin solves a specific recurring pain in our workflow. They're independent &mdash; install one or all. Every skill carries the opinions we earned from production scars.</p>
+
+  <div class="plugin-grid">
+
+    <!-- POST-MORTEM (flagship) -->
+    <div class="plugin-card flagship" style="--plugin-color: var(--post-mortem);">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(245, 158, 11, 0.12);">&#128196;</div>
+        <div>
+          <div class="plugin-name">post-mortem</div>
+          <div class="plugin-tagline">Branded incident-report PDFs with smoking-gun rigor</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Generates branded, multi-page post-mortem PDFs with <strong>smoking-gun evidence rigor</strong>. Every claim in Fault/Detection/Response/Recovery/Root-cause must carry evidence (CloudWatch line + UTC timestamp, commit SHA, support ticket ID, AWS request ID, query result). 14 banned hedging words (<code>likely</code>, <code>probably</code>, <code>may have</code>, <code>appears to</code>, ...) are caught by a linter before render &mdash; you can't ship a PDF that says "we believe the deploy may have caused it." Chrome-headless render loop detects page overflow and splits at natural boundaries.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">5-whys</span>
+        <span class="plugin-tag">evidence-required</span>
+        <span class="plugin-tag">hedge-linter</span>
+        <span class="plugin-tag">branded-pdf</span>
+        <span class="plugin-tag">overflow-detect</span>
+        <span class="plugin-tag">multi-brand</span>
+      </div>
+      <span class="plugin-cmd">/plugin install post-mortem@claude-code-marketplace</span>
+    </div>
+
+    <!-- REFLECT -->
+    <div class="plugin-card" style="--plugin-color: var(--reflect);">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(139, 92, 246, 0.12);">&#129534;</div>
+        <div>
+          <div class="plugin-name">reflect</div>
+          <div class="plugin-tagline">Promote session patterns into durable rules</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Forked-context analysis that scans MEMORY.md, checkpoint logs, and recent session transcripts for recurring corrections and validated approaches. Drafts the exact <code>.claude/rules/&lt;topic&gt;.md</code> file content. Strips emotional content. Skips already-promoted patterns. Logs every promotion so reflection doesn't loop.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">rule-promotion</span>
+        <span class="plugin-tag">forked-context</span>
+        <span class="plugin-tag">memory</span>
+      </div>
+      <span class="plugin-cmd">/plugin install reflect@claude-code-marketplace</span>
+    </div>
+
+    <!-- TRANSCRIPT -->
+    <div class="plugin-card" style="--plugin-color: var(--transcript);">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(6, 182, 212, 0.12);">&#127897;&#65039;</div>
+        <div>
+          <div class="plugin-name">transcript</div>
+          <div class="plugin-tagline">Whisper transcription for voice notes</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        OpenAI Whisper wrapper for audio &rarr; text. Auto-converts <code>.opus</code> (WhatsApp voice notes) to <code>.mp3</code> via ffmpeg because Whisper won't accept opus directly. Auto-summary for transcripts &gt;500 words. Optional save-as-markdown alongside the source file.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">whisper</span>
+        <span class="plugin-tag">opus-fix</span>
+        <span class="plugin-tag">summary</span>
+        <span class="plugin-tag">pt/en/es</span>
+      </div>
+      <span class="plugin-cmd">/plugin install transcript@claude-code-marketplace</span>
+    </div>
+
+    <!-- WATCH-JAM -->
+    <div class="plugin-card" style="--plugin-color: var(--watch-jam);">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(236, 72, 153, 0.12);">&#128252;</div>
+        <div>
+          <div class="plugin-name">watch-jam</div>
+          <div class="plugin-tagline">Vision-powered Jam.dev bug recording analysis</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Paste a <code>jam.dev/c/&lt;uuid&gt;</code> URL &rarr; downloads raw WebM via anonymous GraphQL &rarr; extracts evenly-spaced frames with ffmpeg &rarr; Claude reads them with vision and narrates what the user actually did. Detail levels from <code>quick</code> (3 frames) to <code>many</code> (24). Pairs with the Jam MCP server for full debug context.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">jam.dev</span>
+        <span class="plugin-tag">vision</span>
+        <span class="plugin-tag">ffmpeg</span>
+        <span class="plugin-tag">no-auth</span>
+      </div>
+      <span class="plugin-cmd">/plugin install watch-jam@claude-code-marketplace</span>
+    </div>
+
+    <!-- PASEO-BUNDLE -->
+    <div class="plugin-card" style="--plugin-color: var(--paseo); grid-column: 1 / -1;">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(16, 185, 129, 0.12);">&#127919;</div>
+        <div>
+          <div class="plugin-name">paseo-bundle</div>
+          <div class="plugin-tagline">6 multi-agent orchestration skills for the Paseo daemon</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Six skills wrapping the <a href="https://paseo.dev" style="color: var(--accent); text-decoration: none;">Paseo</a> daemon for managing background coding agents across providers (Claude Opus, GPT-5.4, Haiku) and isolated git worktrees. <strong>paseo</strong> (reference) + <strong>paseo-epic</strong> (heavy-ceremony research &rarr; plan &rarr; adversarial review &rarr; phased implementation &rarr; audit &rarr; deliver) + <strong>paseo-committee</strong> (root-cause analysis pair) + <strong>paseo-advisor</strong> (second opinion) + <strong>paseo-loop</strong> (worker/verifier cycle that runs until exit condition met) + <strong>paseo-handoff</strong> (context-rich task transfer).
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">multi-agent</span>
+        <span class="plugin-tag">worktrees</span>
+        <span class="plugin-tag">cross-provider</span>
+        <span class="plugin-tag">epic-orchestration</span>
+        <span class="plugin-tag">committee</span>
+        <span class="plugin-tag">loop</span>
+      </div>
+      <span class="plugin-cmd">/plugin install paseo-bundle@claude-code-marketplace</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install">
+  <div class="section-label">02 &mdash; Installation</div>
+  <h2>One command. Five plugins available.</h2>
+  <p class="section-desc">Claude Code's native plugin system. No npm install, no global config, no postinstall scripts &mdash; just point at the marketplace and pick what you want.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <h3>Register the marketplace</h3>
+      </div>
+      <div class="step-body">
+        <pre><code><span class="code-command">/plugin marketplace add hyperdrive-bot/claude-code-marketplace</span></code></pre>
+        <p>Claude Code clones the repo under <code>~/.claude/plugins/marketplaces/</code> and indexes the 5 plugins.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <h3>Install the plugins you want</h3>
+      </div>
+      <div class="step-body">
+        <p>Pick individually:</p>
+        <pre><code><span class="code-command">/plugin install post-mortem@claude-code-marketplace</span>
+<span class="code-command">/plugin install reflect@claude-code-marketplace</span>
+<span class="code-command">/plugin install transcript@claude-code-marketplace</span>
+<span class="code-command">/plugin install watch-jam@claude-code-marketplace</span>
+<span class="code-command">/plugin install paseo-bundle@claude-code-marketplace</span></code></pre>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <h3>Invoke a skill</h3>
+      </div>
+      <div class="step-body">
+        <p>Once installed, skills surface as slash commands or natural-language triggers:</p>
+        <pre><code><span class="code-comment"># Trigger explicitly</span>
+<span class="code-command">/post-mortem --branding default --title "Auth Outage 2025-01-15"</span>
+<span class="code-command">/transcript ~/Downloads/voice-note.opus --lang pt --summary</span>
+<span class="code-command">/watch-jam https://jam.dev/c/abc123... thorough</span>
+
+<span class="code-comment"># Or trigger by intent — the skill descriptions are picked up automatically</span>
+<span class="code-command">"Build a post-mortem for the cloud SQL outage"</span>
+<span class="code-command">"Transcribe this voice note"</span>
+<span class="code-command">"Run a committee on this hard planning problem"</span></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Requirements per plugin:</strong> <code>post-mortem</code> needs Chrome + <code>pdftotext</code> (poppler); <code>transcript</code> needs <code>OPENAI_API_KEY</code> + <code>ffmpeg</code>; <code>watch-jam</code> needs <code>ffmpeg</code> + <code>node</code>; <code>paseo-bundle</code> needs the <a href="https://paseo.dev">Paseo</a> daemon. <code>reflect</code> has no external requirements.
+  </div>
+</section>
+
+<!-- OPINIONS / BATTLE SCARS -->
+<section id="opinions">
+  <div class="section-label">03 &mdash; Opinions</div>
+  <h2>Why these plugins exist</h2>
+  <p class="section-desc">Every plugin in here started as a workaround for a pain we kept hitting. The opinions baked into them came from real incidents &mdash; not from a blog post.</p>
+
+  <div class="scars-grid">
+    <div class="scar">
+      <div class="scar-label">&#128165; Hedging kills post-mortems</div>
+      <p>"The deploy <em>likely</em> caused it" is not a finding &mdash; it's a guess that gets pasted into stakeholder emails. Banned-word linter blocks 14 hedging phrases before render. Replaces with citations or <code>EVIDENCE PENDING</code> placeholders.</p>
+    </div>
+    <div class="scar">
+      <div class="scar-label">&#128165; Five Whys ending on a person</div>
+      <p>"X deployed without checking" is too shallow. The real Why-5 is "the deploy gate didn't require a CHANGES file with a blast-radius section." The skill forces systemic root causes, not blame.</p>
+    </div>
+    <div class="scar">
+      <div class="scar-label">&#128165; Sessions repeat the same mistakes</div>
+      <p>Without explicit rules, agents re-learn the same lessons every conversation. <code>reflect</code> promotes 2+ session patterns into durable <code>.claude/rules/</code> files &mdash; learnings compound instead of evaporating.</p>
+    </div>
+    <div class="scar">
+      <div class="scar-label">&#128165; Voice notes die without text</div>
+      <p>A 90-second voice note has 200 words of signal. Without transcription it's an unsearchable artifact that gets lost in WhatsApp history. <code>.opus</code> &rarr; Whisper &rarr; searchable markdown next to the source.</p>
+    </div>
+    <div class="scar">
+      <div class="scar-label">&#128165; Bug recordings die without context</div>
+      <p>Jam.dev recordings show the symptom but devs need to <em>read</em> what the user saw. <code>watch-jam</code> extracts frames so Claude's vision can narrate the flow &mdash; faster than the dev re-watching the video at 2x.</p>
+    </div>
+    <div class="scar">
+      <div class="scar-label">&#128165; Single agent gets stuck</div>
+      <p>When you tunnel-vision on a hard problem, you don't need MORE context &mdash; you need a FRESH context. <code>paseo-committee</code> launches two agents from contrasting providers (Opus + Codex) in parallel for true root-cause analysis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-label">04 &mdash; Roadmap</div>
+  <h2>What's coming next</h2>
+  <p class="section-desc">Curated, not crowdsourced. Each release adds plugins only when they've earned their spot in real work.</p>
+
+  <div class="roadmap">
+    <div class="roadmap-item">
+      <div class="roadmap-version">v0.1</div>
+      <p><strong>Shipped &mdash; 5 plugins.</strong> post-mortem, reflect, transcript, watch-jam, paseo-bundle. You're looking at it.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-version">v0.2</div>
+      <p><strong>Hooks &amp; rules.</strong> Session naming, checkpoint stop-hook, and a generic-rules plugin (Lambda async patterns, CFN deletion-policy hygiene, git safety) extracted from real incident-driven rules.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-version">v0.3</div>
+      <p><strong>BMAD-agent bundle.</strong> Customized BMAD personas with full operational knowledge baked in &mdash; not theoretical roles.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-version">v1.0</div>
+      <p><strong>hyperdrive.bot.</strong> A polished landing for the full @hyperdrive.bot ecosystem &mdash; this marketplace, bmad-sls-react, and whatever else earns its place by then.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="text-align: center;">
+  <div class="section-label">05 &mdash; Try it</div>
+  <h2>Install it in 5 seconds</h2>
+  <p class="section-desc" style="margin-left: auto; margin-right: auto;">Showcase repo. Used daily in production. No support promised, PRs welcome.</p>
+
+  <div class="hero-install" onclick="navigator.clipboard.writeText('/plugin marketplace add hyperdrive-bot/claude-code-marketplace')" style="margin: 0 auto;">
+    <span><span class="dollar">/</span> plugin marketplace add hyperdrive-bot/claude-code-marketplace</span>
+    <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+  </div>
+</section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Built by <a href="https://grupokingdom.com">Kingdom Group</a> &mdash; a software studio specializing in multi-tenant SaaS products on AWS.</p>
+  <p style="margin-top: 0.5rem;">Published under the <code>@hyperdrive.bot</code> scope &mdash; <a href="https://github.com/hyperdrive-bot/claude-code-marketplace">GitHub</a> &mdash; MIT License</p>
+</footer>
+
+</body>
+</html>
