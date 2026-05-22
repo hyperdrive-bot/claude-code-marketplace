@@ -109,6 +109,7 @@ bootstrap:defectdojo:
         -F "scan_type=Gitleaks Scan" \
         -F "file=@/tmp/bootstrap.json" \
         -F "product_name=${QUALITY_PRODUCT}" \
+        -F "product_type_name=Research and Development" \
         -F "engagement_name=ci-bootstrap" \
         -F "auto_create_context=true")
       echo "import-scan HTTP ${HTTP}"
