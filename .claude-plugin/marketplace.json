@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "hyperdrive-bot",
-  "description": "AI dev tools battle-tested in production. 10 plugins: branded PDFs, smoking-gun post-mortems, technical diagrams, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, auto session naming, Datadog RUM observability, and context-compaction-resilient runs.",
+  "description": "AI dev tools battle-tested in production. 10 plugins: branded PDFs, smoking-gun post-mortems, technical diagrams, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, auto session naming, Datadog RUM observability (9 skills end-to-end including frontend scaffold), and context-compaction-resilient runs.",
   "owner": {
     "name": "hyperdrive.bot",
     "url": "https://github.com/hyperdrive-bot"
@@ -66,7 +66,7 @@
     {
       "name": "datadog-bundle",
       "source": "./plugins/datadog-bundle",
-      "description": "8 skills for Datadog RUM observability — login (Playwright auth), sessions/errors/performance/failing-resources (REST search + analytics), watch (replay frame capture), create-app (provision a new RUM application). Org-agnostic via DD_API_KEY/DD_APP_KEY env vars or 1Password fallback.",
+      "description": "9 skills for Datadog RUM observability — login (Playwright auth), sessions/errors/performance/failing-resources (REST search + analytics), watch (replay frame capture), create-app (provision a new RUM application), add (wire RUM into a Next.js/Vite/CRA frontend), datadog (Playwright navigator). Org-agnostic via DD_API_KEY/DD_APP_KEY env vars or 1Password fallback.",
       "category": "development",
       "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/datadog-bundle"
     },

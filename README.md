@@ -151,7 +151,7 @@ Plus a `session-rename.sh` utility that updates the JSONL `custom-title` record 
 
 ---
 
-### 📊 `datadog-bundle` — Datadog RUM observability (8 skills)
+### 📊 `datadog-bundle` — Datadog RUM observability (9 skills)
 
 A complete browser-vision + REST stack for any Datadog RUM org. No hardcoded org refs — resolves credentials via `DD_API_KEY`/`DD_APP_KEY` env vars (preferred) or a 1Password item named via `DD_OP_ITEM` (default `"Datadog"`). Non-US sites configurable via `DD_SITE_BASE`.
 
@@ -164,6 +164,7 @@ A complete browser-vision + REST stack for any Datadog RUM org. No hardcoded org
 | `datadog-failing-resources` | 4xx/5xx breakdown per app/tenant/path |
 | `datadog-watch` | Frame capture from a specific session replay |
 | `datadog-create-app` | Provision a new RUM application + register an alias |
+| `datadog-add` | Wire `@datadog/browser-rum` into a Next.js / Vite / CRA frontend — detect framework, scaffold init code, set env keys, optionally call `create-app` |
 | `datadog` | Top-level browse skill — Playwright over Session Explorer / Error Tracking / Replays |
 
 App aliases registered with `/datadog-create-app` are stored at `~/.local/share/datadog-skill/apps.json` and accepted as `--app <alias>` in every skill. Pass a raw UUID to skip the registry.

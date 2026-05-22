@@ -599,11 +599,11 @@
         <div class="plugin-icon" style="background: rgba(99, 44, 166, 0.12);">&#128202;</div>
         <div>
           <div class="plugin-name">datadog-bundle</div>
-          <div class="plugin-tagline">8 skills for Datadog RUM observability</div>
+          <div class="plugin-tagline">9 skills for Datadog RUM observability</div>
         </div>
       </div>
       <div class="plugin-desc">
-        Complete browser-vision + REST stack for any Datadog RUM org. <strong>No hardcoded org refs</strong> &mdash; credentials via <code>DD_API_KEY</code>/<code>DD_APP_KEY</code> or 1Password (item name via <code>DD_OP_ITEM</code>, defaults to <code>"Datadog"</code>). Skills: <strong>login</strong> (Playwright + ~week cache), <strong>sessions / errors / performance / failing-resources</strong> (REST search + analytics), <strong>watch</strong> (replay frame capture for Claude's vision), <strong>create-app</strong> (provision a new RUM app + alias), <strong>datadog</strong> (top-level browser navigator). App aliases registered locally; non-US sites configurable via <code>DD_SITE_BASE</code>.
+        Complete browser-vision + REST stack for any Datadog RUM org. <strong>No hardcoded org refs</strong> &mdash; credentials via <code>DD_API_KEY</code>/<code>DD_APP_KEY</code> or 1Password (item name via <code>DD_OP_ITEM</code>, defaults to <code>"Datadog"</code>). Skills: <strong>login</strong> (Playwright + ~week cache), <strong>sessions / errors / performance / failing-resources</strong> (REST search + analytics), <strong>watch</strong> (replay frame capture for Claude's vision), <strong>create-app</strong> (provision a new RUM app + alias), <strong>add</strong> (wire <code>@datadog/browser-rum</code> into a Next.js / Vite / CRA frontend &mdash; detect framework, scaffold init code, set env keys), <strong>datadog</strong> (top-level browser navigator). App aliases registered locally; non-US sites configurable via <code>DD_SITE_BASE</code>.
       </div>
       <div class="plugin-tags">
         <span class="plugin-tag">rum</span>
@@ -611,7 +611,8 @@
         <span class="plugin-tag">playwright</span>
         <span class="plugin-tag">session-replay</span>
         <span class="plugin-tag">org-agnostic</span>
-        <span class="plugin-tag">8-skills</span>
+        <span class="plugin-tag">framework-scaffold</span>
+        <span class="plugin-tag">9-skills</span>
       </div>
       <span class="plugin-cmd">/plugin install datadog-bundle@hyperdrive-bot</span>
     </div>
