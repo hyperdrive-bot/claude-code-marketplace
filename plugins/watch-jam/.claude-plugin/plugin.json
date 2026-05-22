@@ -6,7 +6,7 @@
     "name": "Marcelo Marra",
     "url": "https://github.com/hyperdrive-bot"
   },
-  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/watch-jam",
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/watch-jam",
   "keywords": ["jam", "jam.dev", "bug-reports", "video", "screenshots", "debugging", "qa"],
   "category": "development"
 }

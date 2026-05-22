@@ -6,7 +6,7 @@
     "name": "Marcelo Marra",
     "url": "https://github.com/hyperdrive-bot"
   },
-  "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/paseo-bundle",
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/paseo-bundle",
   "keywords": ["paseo", "multi-agent", "orchestration", "worktrees", "committee", "advisor", "loop"],
   "category": "development"
 }

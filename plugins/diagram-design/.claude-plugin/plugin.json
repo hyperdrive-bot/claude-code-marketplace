@@ -1,0 +1,12 @@
+{
+  "name": "diagram-design",
+  "description": "Create technical and product diagrams (13 types: architecture, flowchart, sequence, ER, state machine, timeline, swimlane, quadrant, nested, tree, layer stack, venn, pyramid) as standalone HTML files with inline SVG. Ships with a neutral editorial skin and a first-run gate that prompts users to customize the style guide from their brand site.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/diagram-design",
+  "keywords": ["diagram", "architecture", "flowchart", "sequence", "svg", "design", "documentation"],
+  "category": "documentation"
+}

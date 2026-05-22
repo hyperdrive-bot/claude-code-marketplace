@@ -1,0 +1,12 @@
+{
+  "name": "branded-pdf",
+  "description": "Generate any multi-page branded PDF (proposals, briefings, executive summaries, reports) with a colors/fonts/logo wizard for brand setup. Ships with a neutral default and a Chrome-headless render loop that detects page overflow.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/branded-pdf",
+  "keywords": ["pdf", "branded", "proposal", "briefing", "report", "wizard", "multi-page", "deliverable"],
+  "category": "documentation"
+}

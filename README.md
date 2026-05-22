@@ -1,4 +1,4 @@
-# claude-code-marketplace
+# hyperdrive.bot — Claude Code plugins marketplace
 
 > **AI dev tools, battle-tested in production.**
 > Skills built and used daily by a working team — shared for the rest of the Claude Code community.
@@ -10,17 +10,20 @@ This is a [Claude Code plugin marketplace](https://docs.claude.com/claude-code/p
 ## Install
 
 ```bash
-/plugin marketplace add hyperdrive-bot/claude-code-marketplace
+/plugin marketplace add hyperdrive-bot/marketplace
 ```
 
 Then install whichever plugins you want:
 
 ```bash
-/plugin install post-mortem@claude-code-marketplace
-/plugin install reflect@claude-code-marketplace
-/plugin install transcript@claude-code-marketplace
-/plugin install watch-jam@claude-code-marketplace
-/plugin install paseo-bundle@claude-code-marketplace
+/plugin install post-mortem@hyperdrive-bot
+/plugin install reflect@hyperdrive-bot
+/plugin install transcript@hyperdrive-bot
+/plugin install watch-jam@hyperdrive-bot
+/plugin install paseo-bundle@hyperdrive-bot
+/plugin install branded-pdf@hyperdrive-bot
+/plugin install diagram-design@hyperdrive-bot
+/plugin install session-naming@hyperdrive-bot
 ```
 
 ---
@@ -102,6 +105,50 @@ Six skills that lean on the [Paseo](https://paseo.dev) daemon for managing backg
 
 ---
 
+### 📑 `branded-pdf` — any branded multi-page PDF
+
+Same render-and-overflow engine as `post-mortem`, but for any document (proposals, briefings, executive summaries, monthly reports, retrospectives). First-run wizard collects colors, fonts, and logo via `AskUserQuestion`, generates a brand template under `./templates/<name>/`, and reuses it across all future documents.
+
+- Brand registry: `./templates/<name>/proposal.html` + `render.sh` — copy + edit CSS vars to add brands manually
+- Ships with a neutral default (charcoal + indigo) for zero-config first use
+- Section components: `.metrics`, `.timeline`, `.phase-card`, `.highlight-box`, `.check-list`, tables, badges
+- Chrome-headless render loop with page-overflow detection — splits at natural boundaries, never edits CSS to shoehorn
+
+**Usage:** `/branded-pdf --brand acme --title "Q1 2025 Proposal"` — or `--register-brand <name>` to run the wizard standalone.
+
+---
+
+### 📐 `diagram-design` — 13 diagram types, editorial design system
+
+Generate technical and product diagrams as standalone HTML files with inline SVG. Types: architecture, flowchart, sequence, state machine, ER / data model, timeline, swimlane, quadrant, nested, tree, layer stack, venn, pyramid. Neutral editorial skin out of the box; first-run gate that prompts to customize the style guide from your brand site.
+
+- Annotation-callout primitive for inline notes
+- Optional sketchy variant (loose hand-drawn style)
+- Complexity budget: target density 4/10 — earn every node, every connection
+- Type-specific conventions live in `references/type-<name>.md` and load only when relevant
+
+**Usage:** describe the system you want diagrammed; the skill picks the right type and emits a self-contained HTML file.
+
+---
+
+### 🪧 `session-naming` (hooks) — auto-rename Claude Code sessions
+
+Five hooks that name your sessions automatically based on conversation topic, prefix `done-` when you say bye, and nudge `/reflect` every 10 sessions:
+
+| Hook | Event | What it does |
+|---|---|---|
+| `session-id-inject` | SessionStart | Injects session ID + auto-rename directive into Claude's context |
+| `session-counter` | SessionStart | Increments session counter; emits a reflect nudge when threshold hit |
+| `session-auto-rename` | UserPromptSubmit | After 3 unnamed exchanges, forces Claude to rename NOW |
+| `session-exit-rename` | UserPromptSubmit | Detects exit keywords (bye, tchau, done, exit, ...) and tells Claude to prefix `done-` |
+| `session-done-on-end` | SessionEnd | Final prefix-`done-` pass on natural session end |
+
+Plus a `session-rename.sh` utility that updates the JSONL `custom-title` record and the sessions-index so `/resume` picks up the new name.
+
+**Usage:** install + use. The hooks run themselves. Pair with `reflect` for the full effect (reflect nudge → /reflect → durable rules).
+
+---
+
 ## What's intentionally NOT here
 
 This marketplace is curated. It does not include:
@@ -116,10 +163,11 @@ If you want to see the "real" super-repo with all the rules, agents, hooks, and 
 
 ## Roadmap
 
-- **v0.2** — Hooks plugin: session naming, checkpoint stop-hook, RTK wrapper
-- **v0.2** — Rules plugin: generic Lambda / CFN / Git / npm rules from production incidents
-- **v0.3** — BMAD-agent bundle: Marra-customized BMAD personas (Pirlo, Lena, Coach, Tiririca, ...)
-- **v1.0** — A polished landing page at hyperdrive.bot
+- **v0.1** ✅ — `post-mortem`, `reflect`, `transcript`, `watch-jam`, `paseo-bundle`
+- **v0.2** ✅ — `branded-pdf` (PDF engine wizard), `diagram-design` (13 diagram types), `session-naming` (hooks)
+- **v0.3** — Rules plugin: generic Lambda / CFN / Git / npm rules from production incidents
+- **v0.3** — BMAD-extras plugin: Marra-customized personas not in `@hyperdrive.bot/bmad-sls-react` (Tiririca, Elara, Spike, ...)
+- **v1.0** — Polished landing page at hyperdrive.bot
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "claude-code-marketplace",
-  "description": "AI dev tools battle-tested in production. Skills for post-mortem PDFs with smoking-gun rigor, multi-agent orchestration via Paseo, session reflection, audio transcription, and Jam.dev bug recording analysis.",
+  "name": "hyperdrive-bot",
+  "description": "AI dev tools battle-tested in production. Plugins for branded PDFs, smoking-gun post-mortems, technical diagrams, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, and auto session naming.",
   "owner": {
     "name": "hyperdrive.bot",
     "url": "https://github.com/hyperdrive-bot"
@@ -12,35 +12,56 @@
       "source": "./plugins/post-mortem",
       "description": "Branded post-mortem PDF generator with smoking-gun evidence rigor, banned-hedging linter, and a Chrome-headless render loop that detects page overflow.",
       "category": "documentation",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/post-mortem"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/post-mortem"
     },
     {
       "name": "reflect",
       "source": "./plugins/reflect",
       "description": "Analyze accumulated session learnings and promote recurring patterns to durable rules. Forked-context analysis returns proposals; parent conversation writes approved rules.",
       "category": "productivity",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/reflect"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/reflect"
     },
     {
       "name": "transcript",
       "source": "./plugins/transcript",
       "description": "Transcribe audio files (mp3, wav, m4a, ogg, opus, webm, flac, mp4) to text via OpenAI Whisper API. Auto-converts opus to mp3 via ffmpeg for WhatsApp voice notes.",
       "category": "productivity",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/transcript"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/transcript"
     },
     {
       "name": "watch-jam",
       "source": "./plugins/watch-jam",
       "description": "Watch a jam.dev bug recording: downloads the raw WebM via anonymous GraphQL, extracts evenly-spaced key frames with ffmpeg, and feeds them to Claude's vision.",
       "category": "development",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/watch-jam"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/watch-jam"
     },
     {
       "name": "paseo-bundle",
       "source": "./plugins/paseo-bundle",
       "description": "Multi-agent orchestration skills for the Paseo daemon: epic (heavy-ceremony), committee (root-cause pair), advisor (second opinion), loop (worker/verifier cycle), handoff (context-rich transfer).",
       "category": "development",
-      "homepage": "https://github.com/hyperdrive-bot/claude-code-marketplace/tree/main/plugins/paseo-bundle"
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/paseo-bundle"
+    },
+    {
+      "name": "branded-pdf",
+      "source": "./plugins/branded-pdf",
+      "description": "Generate any multi-page branded PDF (proposals, briefings, executive summaries, reports) with a colors/fonts/logo wizard for brand setup. Same render-and-overflow engine as post-mortem, generic content shape.",
+      "category": "documentation",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/branded-pdf"
+    },
+    {
+      "name": "diagram-design",
+      "source": "./plugins/diagram-design",
+      "description": "Create 13 types of technical and product diagrams (architecture, flowchart, sequence, ER, state machine, timeline, swimlane, quadrant, nested, tree, layer stack, venn, pyramid) as standalone HTML+SVG with a first-run brand-style gate.",
+      "category": "documentation",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/diagram-design"
+    },
+    {
+      "name": "session-naming",
+      "source": "./plugins/session-naming",
+      "description": "Auto-name Claude Code sessions from conversation topic, prefix 'done-' on natural exit, and nudge /reflect every 10 sessions. Five SessionStart/UserPromptSubmit/SessionEnd hooks plus a rename utility.",
+      "category": "productivity",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/session-naming"
     }
   ]
 }

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{DOC_TITLE}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Default brand palette — neutral charcoal + indigo accent.
+       Override these variables in your own copy to rebrand. */
+    :root {
+      --brand-black: #18181B;
+      --brand-gray-i: #27272A;
+      --brand-gray-ii: #3F3F46;
+      --brand-gray-iii: #52525B;
+      --brand-gray-iv: #71717A;
+      --brand-accent: #6366F1;
+      --brand-accent-i: #4F46E5;
+      --brand-accent-ii: #818CF8;
+      --brand-white: #FFFFFF;
+      --brand-bg: #F4F4F5;
+      --brand-border: #E4E4E7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: A4; margin: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--brand-gray-i);
+      background: var(--brand-white);
+      line-height: 1.6;
+      font-size: 14px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ── COVER PAGE ── */
+    .cover {
+      min-height: 100vh;
+      background: var(--brand-black);
+      color: var(--brand-white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: -150px; left: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(79,70,229,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .cover-brand {
+      font-size: 20px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 60px;
+      position: relative; z-index: 1;
+    }
+    .cover-label {
+      font-size: 13px; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--brand-accent-ii);
+      margin-bottom: 16px; position: relative; z-index: 1;
+    }
+    .cover-badge {
+      display: inline-block; padding: 4px 12px; margin-bottom: 16px;
+      border-radius: 4px; font-size: 11px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      background: rgba(255,255,255,0.1); color: var(--brand-accent-ii);
+      position: relative; z-index: 1;
+    }
+    .cover-badge.is-critical { background: rgba(220,38,38,0.2); color: #FCA5A5; }
+    .cover-badge.is-warning  { background: rgba(217,119,6,0.2);  color: #FCD34D; }
+    .cover-badge.is-success  { background: rgba(5,150,105,0.2);  color: #6EE7B7; }
+    .cover h1 {
+      font-size: 48px; font-weight: 800; line-height: 1.1;
+      margin-bottom: 24px; position: relative; z-index: 1;
+    }
+    .cover h1 span { color: var(--brand-accent-ii); }
+    .cover-subtitle {
+      font-size: 18px; color: var(--brand-gray-iv);
+      max-width: 560px; line-height: 1.6; position: relative; z-index: 1;
+    }
+    .cover-meta {
+      position: absolute; bottom: 80px; left: 80px; right: 80px;
+      display: flex; justify-content: space-between; align-items: flex-end; z-index: 1;
+    }
+    .cover-meta-item { font-size: 12px; color: var(--brand-gray-iv); }
+    .cover-meta-item strong {
+      display: block; color: var(--brand-white);
+      font-weight: 600; margin-bottom: 2px;
+    }
+
+    /* ── CONTENT PAGES ── */
+    .page {
+      padding: 60px 80px;
+      page-break-after: always;
+      min-height: 100vh;
+      position: relative;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--brand-border);
+      margin-bottom: 40px;
+    }
+    .page-brand { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--brand-gray-iv); }
+    .page-number {
+      font-size: 11px; font-weight: 600;
+      color: var(--brand-gray-iv); letter-spacing: 1px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--brand-accent);
+      margin-bottom: 8px;
+    }
+    h2 { font-size: 28px; font-weight: 800; color: var(--brand-black); margin-bottom: 8px; line-height: 1.2; }
+    h3 { font-size: 18px; font-weight: 700; color: var(--brand-gray-i); margin-top: 32px; margin-bottom: 12px; }
+    h4 { font-size: 15px; font-weight: 700; color: var(--brand-gray-ii); margin-top: 24px; margin-bottom: 8px; }
+    .section-intro { font-size: 15px; color: var(--brand-gray-iii); margin-bottom: 32px; max-width: 640px; }
+    p { margin-bottom: 12px; color: var(--brand-gray-ii); }
+
+    /* ── TABLES ── */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
+    thead th {
+      background: var(--brand-gray-i); color: var(--brand-white);
+      padding: 10px 14px; text-align: left;
+      font-weight: 600; font-size: 11px;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    thead th:first-child { border-radius: 6px 0 0 0; }
+    thead th:last-child { border-radius: 0 6px 0 0; }
+    tbody td { padding: 10px 14px; border-bottom: 1px solid var(--brand-border); color: var(--brand-gray-ii); }
+    tbody tr:nth-child(even) { background: #FAFAFB; }
+    tbody tr:last-child td:first-child { border-radius: 0 0 0 6px; }
+    tbody tr:last-child td:last-child { border-radius: 0 0 6px 0; }
+
+    /* ── PHASE CARDS ── */
+    .phase-card {
+      border: 1px solid var(--brand-border);
+      border-radius: 10px;
+      padding: 24px; margin: 20px 0;
+      background: var(--brand-white);
+      position: relative; overflow: hidden;
+    }
+    .phase-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: var(--brand-accent);
+    }
+    .phase-card .phase-number { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--brand-accent); margin-bottom: 4px; }
+    .phase-card .phase-title { font-size: 18px; font-weight: 700; color: var(--brand-black); margin-bottom: 4px; }
+    .phase-card .phase-period { font-size: 12px; color: var(--brand-gray-iv); margin-bottom: 16px; }
+
+    /* ── TIMELINE ── */
+    .timeline { display: flex; gap: 0; margin: 32px 0; border-radius: 8px; overflow: hidden; }
+    .timeline-block { flex: 1; padding: 16px 20px; text-align: center; color: var(--brand-white); }
+    .timeline-block:nth-child(1) { background: var(--brand-gray-i); }
+    .timeline-block:nth-child(2) { background: var(--brand-gray-ii); }
+    .timeline-block:nth-child(3) { background: var(--brand-gray-iii); }
+    .timeline-block .tl-week { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; margin-bottom: 4px; }
+    .timeline-block .tl-title { font-size: 14px; font-weight: 700; }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: linear-gradient(135deg, var(--brand-black) 0%, var(--brand-gray-ii) 100%);
+      color: var(--brand-white); border-radius: 10px;
+      padding: 32px; margin: 24px 0;
+    }
+    .highlight-box h3 { color: var(--brand-accent-ii); margin-top: 0; font-size: 16px; }
+    .highlight-box p { color: rgba(255,255,255,0.8); margin-bottom: 0; }
+    .highlight-box ul { margin: 12px 0 0; padding-left: 20px; }
+    .highlight-box ul li { color: rgba(255,255,255,0.8); margin-bottom: 6px; }
+
+    /* ── METRICS ── */
+    .metrics { display: flex; gap: 16px; margin: 24px 0; }
+    .metric-card { flex: 1; background: var(--brand-bg); border-radius: 8px; padding: 20px; text-align: center; }
+    .metric-card .metric-value { font-size: 32px; font-weight: 800; color: var(--brand-black); }
+    .metric-card .metric-label { font-size: 12px; color: var(--brand-gray-iv); margin-top: 4px; }
+
+    /* ── LISTS ── */
+    ul { padding-left: 20px; margin: 8px 0 16px; }
+    li { margin-bottom: 6px; color: var(--brand-gray-ii); }
+    .check-list { list-style: none; padding-left: 0; }
+    .check-list li { padding-left: 24px; position: relative; margin-bottom: 8px; }
+    .check-list li::before { content: '✓'; position: absolute; left: 0; color: var(--brand-accent); font-weight: 700; }
+
+    /* ── BANNERS ── */
+    .banner { padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+    .banner-warning { background: #FEF3C7; color: #92400E; border-left: 4px solid #D97706; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      position: absolute; bottom: 40px; left: 80px; right: 80px;
+      font-size: 10px; color: var(--brand-gray-iv);
+      border-top: 1px solid var(--brand-border);
+      padding-top: 12px;
+      display: flex; justify-content: space-between;
+    }
+
+    /* ── BADGES ── */
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .badge-critical { background: #FEE2E2; color: #DC2626; }
+    .badge-warning  { background: #FEF3C7; color: #D97706; }
+    .badge-info     { background: #E0E7FF; color: #4338CA; }
+    .badge-success  { background: #D1FAE5; color: #059669; }
+
+    @media print {
+      .cover { min-height: 100vh; }
+      .page { min-height: 100vh; }
+      body { -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ COVER ═══════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-brand">{{BRAND_NAME}}</div>
+  <span class="cover-badge {{SEVERITY_CLASS}}">{{SEVERITY_BADGE}}</span>
+  <div class="cover-label">{{COVER_LABEL}}</div>
+  <h1>{{COVER_TITLE_HTML}}</h1>
+  <p class="cover-subtitle">{{COVER_SUBTITLE}}</p>
+
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <strong>Date</strong>
+      {{COVER_META_DATE}}
+    </div>
+    <div class="cover-meta-item">
+      <strong>Severity</strong>
+      {{COVER_META_SEVERITY}}
+    </div>
+    <div class="cover-meta-item">
+      <strong>Owner</strong>
+      {{COVER_META_OWNER}}
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ PAGE 01 ═══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-brand">{{BRAND_NAME}}</span>
+    <span class="page-number">01 / NN</span>
+  </div>
+
+  <div class="section-label">{{SECTION_LABEL}}</div>
+  <h2>{{PAGE_TITLE}}</h2>
+  <p class="section-intro">{{PAGE_INTRO}}</p>
+
+  <!-- Add content blocks here: .metrics, .timeline, .phase-card, tables, .highlight-box, lists -->
+
+  <div class="page-footer">
+    <span>{{BRAND_NAME}}</span>
+    <span>{{FOOTER_LABEL}}</span>
+  </div>
+</div>
+
+<!-- Duplicate the <div class="page"> block above for each content page. Update page-number NN/NN. -->
+
+</body>
+</html>
