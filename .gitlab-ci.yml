@@ -3,27 +3,55 @@
 # Public mirror: github.com/hyperdrive-bot/marketplace
 #
 # Pipeline:
-#   1. validate     — JSON schema check on marketplace.json + every plugin.json
-#   2. deploy       — Vercel production deploy of docs/ landing page
-#   3. publish      — Mirror the validated/deployed commit back to GitHub main
+#   1. quality      — shared security/quality gates from dev_squad/ci
+#                     (semgrep · gitleaks · trivy · checkov · syft+grype · sonarqube)
+#                     all upload to DefectDojo via DD_API_TOKEN
+#   2. validate     — marketplace.json + plugin.json schema + registry/filesystem parity
+#   3. deploy       — Vercel production deploy of docs/ landing
+#   4. publish      — Mirror the validated commit back to GitHub main
 #
-# Required CI/CD variables (set in Settings → CI/CD → Variables):
-#   VERCEL_TOKEN         (masked, protected)
-#   VERCEL_ORG_ID        (protected)
-#   VERCEL_PROJECT_ID    (protected)
-#   GITHUB_PUSH_TOKEN    (masked, protected) — PAT with `repo` scope, used as x-access-token
+# Required CI/CD variables:
+#   PROJECT-level (set in Settings → CI/CD → Variables):
+#     VERCEL_TOKEN         (masked, protected)
+#     VERCEL_ORG_ID        (protected)
+#     VERCEL_PROJECT_ID    (protected)
+#     GITHUB_PUSH_TOKEN    (masked, protected) — PAT with repo:write, used as x-access-token
+#     QUALITY_PRODUCT      — "claude-code-marketplace" (DefectDojo Product name)
+#
+#   GROUP-level (inherited from dev_squad/repo):
+#     DD_API_TOKEN         (masked) — DefectDojo
+#     SONAR_TOKEN          (masked) — SonarQube
+#     QUALITY_DD_URL       — https://defectdojo.hyperdrive.bot
+#     QUALITY_SONAR_URL    — https://sonarqube.hyperdrive.bot
+
+# Run on branch pushes only; MR pipelines suppressed so the shared quality scans
+# don't fire twice for the same SHA when a branch push has an open MR (matches
+# api repo pattern — API-153).
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+image: node:22-alpine
 
 stages:
+  - quality
   - validate
   - deploy
   - publish
 
-default:
-  image: node:22-alpine
-  # No tags → picked up by ds-runner-light/heavy (group runners, untagged)
-
 variables:
-  GIT_DEPTH: "0"   # full history — publish:github needs it for the mirror push
+  GIT_DEPTH: "0"   # full history — publish:github needs it for the mirror push;
+                   # sonarqube also wants it for accurate blame on new code
+
+# Pull the shared security/quality gates from dev_squad/ci.
+# Same template the api repo uses. See:
+#   gitlab.com/dev_squad/ci/-/blob/master/steps/quality/quality-gates.yml
+include:
+  - project: 'dev_squad/ci'
+    file: 'steps/quality/quality-gates.yml'
+    ref: master
 
 # ─── validate ────────────────────────────────────────────────────────────────
 
@@ -72,13 +100,15 @@ validate:manifests:
       PY
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 # ─── deploy ──────────────────────────────────────────────────────────────────
 
 deploy:landing:
   stage: deploy
-  needs: ["validate:manifests"]
+  needs:
+    - validate:manifests
+    - job: quality:gitleaks    # gitleaks is the only hard-fail quality gate
+                                # the rest run in parallel without blocking
   environment:
     name: production
     url: https://cc-marketplace.hyperdrive.bot
@@ -104,7 +134,8 @@ deploy:landing:
 
 publish:github:
   stage: publish
-  needs: ["deploy:landing"]
+  needs:
+    - deploy:landing
   before_script:
     - apk add --no-cache git
   script:
