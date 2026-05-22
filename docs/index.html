@@ -39,6 +39,8 @@
     --branded-pdf: #F97316;
     --diagram-design: #3B82F6;
     --session-naming: #14B8A6;
+    --datadog-bundle: #632CA6;
+    --resilient-run: #EAB308;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -394,7 +396,7 @@
     hyperdrive-bot/marketplace
   </div>
   <h1>Claude Code skills, forged in<br><span class="accent">production fire.</span></h1>
-  <p>8 battle-tested plugins extracted from real production work shipping multi-tenant SaaS on AWS. Smoking-gun post-mortem PDFs, branded multi-page documents, 13 diagram types, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, and auto session naming. No theory &mdash; every plugin earned its place in our daily workflow.</p>
+  <p>10 battle-tested plugins extracted from real production work shipping multi-tenant SaaS on AWS. Smoking-gun post-mortem PDFs, branded multi-page documents, 13 diagram types, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, auto session naming, Datadog RUM observability, and context-compaction-resilient runs. No theory &mdash; every plugin earned its place in our daily workflow.</p>
   <div class="hero-install" onclick="navigator.clipboard.writeText('/plugin marketplace add hyperdrive-bot/marketplace')">
     <span><span class="dollar">/</span> plugin marketplace add hyperdrive-bot/marketplace</span>
     <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -414,7 +416,7 @@
 <!-- PLUGINS -->
 <section id="plugins">
   <div class="section-label">01 &mdash; The Plugins</div>
-  <h2>8 plugins. Zero filler.</h2>
+  <h2>10 plugins. Zero filler.</h2>
   <p class="section-desc">Each plugin solves a specific recurring pain in our workflow. They're independent &mdash; install one or all. Every skill carries the opinions we earned from production scars.</p>
 
   <div class="plugin-grid">
@@ -591,13 +593,57 @@
       <span class="plugin-cmd">/plugin install session-naming@hyperdrive-bot</span>
     </div>
 
+    <!-- DATADOG-BUNDLE -->
+    <div class="plugin-card" style="--plugin-color: var(--datadog-bundle); grid-column: 1 / -1;">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(99, 44, 166, 0.12);">&#128202;</div>
+        <div>
+          <div class="plugin-name">datadog-bundle</div>
+          <div class="plugin-tagline">8 skills for Datadog RUM observability</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        Complete browser-vision + REST stack for any Datadog RUM org. <strong>No hardcoded org refs</strong> &mdash; credentials via <code>DD_API_KEY</code>/<code>DD_APP_KEY</code> or 1Password (item name via <code>DD_OP_ITEM</code>, defaults to <code>"Datadog"</code>). Skills: <strong>login</strong> (Playwright + ~week cache), <strong>sessions / errors / performance / failing-resources</strong> (REST search + analytics), <strong>watch</strong> (replay frame capture for Claude's vision), <strong>create-app</strong> (provision a new RUM app + alias), <strong>datadog</strong> (top-level browser navigator). App aliases registered locally; non-US sites configurable via <code>DD_SITE_BASE</code>.
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">rum</span>
+        <span class="plugin-tag">observability</span>
+        <span class="plugin-tag">playwright</span>
+        <span class="plugin-tag">session-replay</span>
+        <span class="plugin-tag">org-agnostic</span>
+        <span class="plugin-tag">8-skills</span>
+      </div>
+      <span class="plugin-cmd">/plugin install datadog-bundle@hyperdrive-bot</span>
+    </div>
+
+    <!-- RESILIENT-RUN -->
+    <div class="plugin-card" style="--plugin-color: var(--resilient-run);">
+      <div class="plugin-header">
+        <div class="plugin-icon" style="background: rgba(234, 179, 8, 0.12);">&#9851;&#65039;</div>
+        <div>
+          <div class="plugin-name">resilient-run</div>
+          <div class="plugin-tagline">Survive context compaction</div>
+        </div>
+      </div>
+      <div class="plugin-desc">
+        A checkpoint-and-resume protocol for long-running agent sessions. The progress file at <code>docs/resilient-run/&lt;slug&gt;/PROGRESS.md</code> is the single source of truth &mdash; when Claude Code compacts your conversation, the protocol restores from there and work picks up exactly where it left off. Three modes: <strong>init</strong> (new run from a goal), <strong>resume</strong> (continue from progress file), <strong>discovery</strong> (find existing runs).
+      </div>
+      <div class="plugin-tags">
+        <span class="plugin-tag">checkpoint</span>
+        <span class="plugin-tag">resume</span>
+        <span class="plugin-tag">long-running</span>
+        <span class="plugin-tag">autonomous</span>
+      </div>
+      <span class="plugin-cmd">/plugin install resilient-run@hyperdrive-bot</span>
+    </div>
+
   </div>
 </section>
 
 <!-- INSTALL -->
 <section id="install">
   <div class="section-label">02 &mdash; Installation</div>
-  <h2>One command. Eight plugins available.</h2>
+  <h2>One command. Ten plugins available.</h2>
   <p class="section-desc">Claude Code's native plugin system. No npm install, no global config, no postinstall scripts &mdash; just point at the marketplace and pick what you want.</p>
 
   <div class="steps">
@@ -608,7 +654,7 @@
       </div>
       <div class="step-body">
         <pre><code><span class="code-command">/plugin marketplace add hyperdrive-bot/marketplace</span></code></pre>
-        <p>Claude Code clones the repo under <code>~/.claude/plugins/marketplaces/</code> and indexes the 8 plugins.</p>
+        <p>Claude Code clones the repo under <code>~/.claude/plugins/marketplaces/</code> and indexes the 10 plugins.</p>
       </div>
     </div>
     <div class="step">
@@ -625,7 +671,9 @@
 <span class="code-command">/plugin install paseo-bundle@hyperdrive-bot</span>
 <span class="code-command">/plugin install branded-pdf@hyperdrive-bot</span>
 <span class="code-command">/plugin install diagram-design@hyperdrive-bot</span>
-<span class="code-command">/plugin install session-naming@hyperdrive-bot</span></code></pre>
+<span class="code-command">/plugin install session-naming@hyperdrive-bot</span>
+<span class="code-command">/plugin install datadog-bundle@hyperdrive-bot</span>
+<span class="code-command">/plugin install resilient-run@hyperdrive-bot</span></code></pre>
       </div>
     </div>
     <div class="step">
@@ -700,15 +748,15 @@
     </div>
     <div class="roadmap-item">
       <div class="roadmap-version">v0.2</div>
-      <p><strong>Shipped &mdash; 3 plugins.</strong> branded-pdf (PDF engine + brand wizard), diagram-design (13 diagram types), session-naming (5 hooks). You're looking at the result.</p>
+      <p><strong>Shipped &mdash; 3 plugins.</strong> branded-pdf (PDF engine + brand wizard), diagram-design (13 diagram types), session-naming (5 hooks).</p>
     </div>
     <div class="roadmap-item">
       <div class="roadmap-version">v0.3</div>
+      <p><strong>Shipped &mdash; 2 plugins.</strong> datadog-bundle (8 RUM observability skills) and resilient-run (context-compaction-resilient protocol). You're looking at the result.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-version">v0.4</div>
       <p><strong>Rules plugin.</strong> Generic Lambda async patterns, CFN deletion-policy hygiene, git safety guards, npm platform-deps gotchas &mdash; extracted from real incident-driven rules.</p>
-    </div>
-    <div class="roadmap-item">
-      <div class="roadmap-version">v0.3</div>
-      <p><strong>BMAD-extras.</strong> Marra-customized BMAD personas not in <code>@hyperdrive.bot/bmad-sls-react</code> &mdash; Tiririca (BS detector), Elara (FinOps), Spike (Remotion video), Braga (security review), and more.</p>
     </div>
     <div class="roadmap-item">
       <div class="roadmap-version">v1.0</div>

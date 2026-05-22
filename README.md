@@ -24,6 +24,8 @@ Then install whichever plugins you want:
 /plugin install branded-pdf@hyperdrive-bot
 /plugin install diagram-design@hyperdrive-bot
 /plugin install session-naming@hyperdrive-bot
+/plugin install datadog-bundle@hyperdrive-bot
+/plugin install resilient-run@hyperdrive-bot
 ```
 
 ---
@@ -149,6 +151,42 @@ Plus a `session-rename.sh` utility that updates the JSONL `custom-title` record 
 
 ---
 
+### 📊 `datadog-bundle` — Datadog RUM observability (8 skills)
+
+A complete browser-vision + REST stack for any Datadog RUM org. No hardcoded org refs — resolves credentials via `DD_API_KEY`/`DD_APP_KEY` env vars (preferred) or a 1Password item named via `DD_OP_ITEM` (default `"Datadog"`). Non-US sites configurable via `DD_SITE_BASE`.
+
+| Skill | What it does |
+|---|---|
+| `datadog-login` | Playwright login + storageState cache (~weeks) |
+| `datadog-sessions` | RUM session search via REST — filter tenant/user/time/DQL |
+| `datadog-errors` | RUM error search, grouped by top messages |
+| `datadog-performance` | Analytics aggregate (slow views, FCP, LCP, CLS) |
+| `datadog-failing-resources` | 4xx/5xx breakdown per app/tenant/path |
+| `datadog-watch` | Frame capture from a specific session replay |
+| `datadog-create-app` | Provision a new RUM application + register an alias |
+| `datadog` | Top-level browse skill — Playwright over Session Explorer / Error Tracking / Replays |
+
+App aliases registered with `/datadog-create-app` are stored at `~/.local/share/datadog-skill/apps.json` and accepted as `--app <alias>` in every skill. Pass a raw UUID to skip the registry.
+
+**Requires:** `node`, `playwright` (installed via the plugin's `npm install`), `op` CLI if using 1Password fallback.
+
+**Usage:** `/datadog-login` → `/datadog-create-app <name>` → then `/datadog-sessions --app <name> --tenant <id> --last 1h`, etc.
+
+---
+
+### ♻️ `resilient-run` — context-compaction-resilient runs
+
+A checkpoint-and-resume protocol for long-running agent sessions. Writes a centralized progress file as the single source of truth. When Claude Code compacts your conversation, the protocol restores from the file — work picks up exactly where it left off.
+
+- Three modes: `init` (new run from a goal), `resume` (continue from progress file), `discovery` (find existing runs)
+- Single-source-of-truth progress file at `docs/resilient-run/<slug>/PROGRESS.md`
+- Frequent writes — every meaningful step
+- Slug auto-generated from the goal
+
+**Usage:** `/resilient-run "Build the new auth flow end to end"` or `/resilient-run resume` to find and resume.
+
+---
+
 ## What's intentionally NOT here
 
 This marketplace is curated. It does not include:
@@ -165,8 +203,8 @@ If you want to see the "real" super-repo with all the rules, agents, hooks, and 
 
 - **v0.1** ✅ — `post-mortem`, `reflect`, `transcript`, `watch-jam`, `paseo-bundle`
 - **v0.2** ✅ — `branded-pdf` (PDF engine wizard), `diagram-design` (13 diagram types), `session-naming` (hooks)
-- **v0.3** — Rules plugin: generic Lambda / CFN / Git / npm rules from production incidents
-- **v0.3** — BMAD-extras plugin: Marra-customized personas not in `@hyperdrive.bot/bmad-sls-react` (Tiririca, Elara, Spike, ...)
+- **v0.3** ✅ — `datadog-bundle` (8 skills for RUM observability), `resilient-run` (checkpoint-and-resume protocol)
+- **v0.4** — Rules plugin: generic Lambda / CFN / Git / npm rules from production incidents
 - **v1.0** — Polished landing page at hyperdrive.bot
 
 ---

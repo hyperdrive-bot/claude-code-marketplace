@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "hyperdrive-bot",
-  "description": "AI dev tools battle-tested in production. Plugins for branded PDFs, smoking-gun post-mortems, technical diagrams, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, and auto session naming.",
+  "description": "AI dev tools battle-tested in production. 10 plugins: branded PDFs, smoking-gun post-mortems, technical diagrams, multi-agent orchestration via Paseo, session reflection, audio transcription, Jam.dev recording analysis, auto session naming, Datadog RUM observability, and context-compaction-resilient runs.",
   "owner": {
     "name": "hyperdrive.bot",
     "url": "https://github.com/hyperdrive-bot"
@@ -62,6 +62,20 @@
       "description": "Auto-name Claude Code sessions from conversation topic, prefix 'done-' on natural exit, and nudge /reflect every 10 sessions. Five SessionStart/UserPromptSubmit/SessionEnd hooks plus a rename utility.",
       "category": "productivity",
       "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/session-naming"
+    },
+    {
+      "name": "datadog-bundle",
+      "source": "./plugins/datadog-bundle",
+      "description": "8 skills for Datadog RUM observability — login (Playwright auth), sessions/errors/performance/failing-resources (REST search + analytics), watch (replay frame capture), create-app (provision a new RUM application). Org-agnostic via DD_API_KEY/DD_APP_KEY env vars or 1Password fallback.",
+      "category": "development",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/datadog-bundle"
+    },
+    {
+      "name": "resilient-run",
+      "source": "./plugins/resilient-run",
+      "description": "Checkpoint-and-resume protocol that survives Claude Code context compaction. Writes a centralized progress file as the single source of truth so any future session (or you after compaction) can pick up exactly where work left off.",
+      "category": "productivity",
+      "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/resilient-run"
     }
   ]
 }

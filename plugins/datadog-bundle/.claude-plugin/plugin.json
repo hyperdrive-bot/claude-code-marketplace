@@ -1,0 +1,12 @@
+{
+  "name": "datadog-bundle",
+  "description": "8 skills for Datadog RUM observability: login (Playwright auth), sessions/errors/performance/failing-resources (REST search + analytics), watch (replay frame capture), create-app (provision a new RUM application). Works against any Datadog org via DD_API_KEY/DD_APP_KEY or 1Password — no hardcoded org refs.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/datadog-bundle",
+  "keywords": ["datadog", "rum", "observability", "monitoring", "playwright", "session-replay", "frontend-errors"],
+  "category": "development"
+}

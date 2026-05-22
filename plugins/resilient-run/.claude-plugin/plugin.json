@@ -1,0 +1,12 @@
+{
+  "name": "resilient-run",
+  "description": "Checkpoint-and-resume protocol that survives Claude Code context compaction. Writes a centralized progress file as the single source of truth so any future session (or you after compaction) can pick up exactly where work left off.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Marcelo Marra",
+    "url": "https://github.com/hyperdrive-bot"
+  },
+  "homepage": "https://github.com/hyperdrive-bot/marketplace/tree/main/plugins/resilient-run",
+  "keywords": ["resilient-run", "checkpoint", "resume", "context-compaction", "long-running", "autonomous", "protocol"],
+  "category": "productivity"
+}
