@@ -49,6 +49,7 @@ default:
     - sa-east-1
 
 stages:
+  - bootstrap
   - quality
   - validate
   - deploy
@@ -65,6 +66,63 @@ include:
   - project: 'dev_squad/ci'
     file: 'steps/quality/quality-gates.yml'
     ref: master
+
+# ─── bootstrap ───────────────────────────────────────────────────────────────
+#
+# DefectDojo's `reimport-scan` endpoint (used by the shared .dd_upload anchor)
+# requires the product/engagement/test to already exist — `auto_create_context`
+# only takes effect on `import-scan`. On the first pipeline run for a brand-new
+# QUALITY_PRODUCT, the reimports all 400 and quality:gate stays red forever.
+#
+# This job idempotently bootstraps the product by hitting `import-scan` ONCE
+# with a tiny valid scan file. After it runs the first time, the product
+# exists; subsequent runs see it and exit fast.
+
+bootstrap:defectdojo:
+  stage: bootstrap
+  image: 980082924943.dkr.ecr.sa-east-1.amazonaws.com/ci-mirror/library/alpine:3.20
+  before_script:
+    - apk add --no-cache curl jq
+  script:
+    - |
+      set -e
+      if [ -z "${DD_API_TOKEN:-}" ] || [ -z "${QUALITY_DD_URL:-}" ]; then
+        echo "DD_API_TOKEN/QUALITY_DD_URL not set — skipping bootstrap"
+        exit 0
+      fi
+      ENC=$(printf '%s' "${QUALITY_PRODUCT}" | jq -sRr @uri)
+      EXISTS=$(curl -sH "Authorization: Token ${DD_API_TOKEN}" \
+        "${QUALITY_DD_URL}/api/v2/products/?name=${ENC}&limit=1" \
+        | jq -r '.results[0].id // empty')
+      if [ -n "$EXISTS" ]; then
+        echo "✓ DefectDojo product '${QUALITY_PRODUCT}' exists (id=${EXISTS}) — bootstrap no-op"
+        exit 0
+      fi
+      echo "Bootstrapping DefectDojo product '${QUALITY_PRODUCT}' via import-scan…"
+      # Empty Gitleaks-shaped report — valid JSON array, no findings.
+      # Gitleaks Scan is registered in every DefectDojo install and accepts
+      # an empty `[]` as zero findings.
+      echo '[]' > /tmp/bootstrap.json
+      HTTP=$(curl -sS -o /tmp/import.json -w "%{http_code}" \
+        -X POST "${QUALITY_DD_URL}/api/v2/import-scan/" \
+        -H "Authorization: Token ${DD_API_TOKEN}" \
+        -F "scan_type=Gitleaks Scan" \
+        -F "file=@/tmp/bootstrap.json" \
+        -F "product_name=${QUALITY_PRODUCT}" \
+        -F "engagement_name=ci-bootstrap" \
+        -F "auto_create_context=true")
+      echo "import-scan HTTP ${HTTP}"
+      head -c 500 /tmp/import.json; echo
+      EXISTS=$(curl -sH "Authorization: Token ${DD_API_TOKEN}" \
+        "${QUALITY_DD_URL}/api/v2/products/?name=${ENC}&limit=1" \
+        | jq -r '.results[0].id // empty')
+      if [ -z "$EXISTS" ]; then
+        echo "❌ Bootstrap failed — product still not visible"
+        exit 1
+      fi
+      echo "✓ Bootstrapped DefectDojo product '${QUALITY_PRODUCT}' (id=${EXISTS})"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
 
 # ─── validate ────────────────────────────────────────────────────────────────
 
