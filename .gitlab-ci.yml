@@ -1,0 +1,120 @@
+# claude-code-marketplace — GitLab CI/CD
+# Source of truth: gitlab.com/dev_squad/repo/tooling/claude-code-marketplace
+# Public mirror: github.com/hyperdrive-bot/marketplace
+#
+# Pipeline:
+#   1. validate     — JSON schema check on marketplace.json + every plugin.json
+#   2. deploy       — Vercel production deploy of docs/ landing page
+#   3. publish      — Mirror the validated/deployed commit back to GitHub main
+#
+# Required CI/CD variables (set in Settings → CI/CD → Variables):
+#   VERCEL_TOKEN         (masked, protected)
+#   VERCEL_ORG_ID        (protected)
+#   VERCEL_PROJECT_ID    (protected)
+#   GITHUB_PUSH_TOKEN    (masked, protected) — PAT with `repo` scope, used as x-access-token
+
+stages:
+  - validate
+  - deploy
+  - publish
+
+default:
+  image: node:22-alpine
+  # No tags → picked up by ds-runner-light/heavy (group runners, untagged)
+
+variables:
+  GIT_DEPTH: "0"   # full history — publish:github needs it for the mirror push
+
+# ─── validate ────────────────────────────────────────────────────────────────
+
+validate:manifests:
+  stage: validate
+  script:
+    - apk add --no-cache python3
+    - |
+      python3 - <<'PY'
+      import json, glob, sys
+
+      errors = []
+
+      # marketplace.json
+      with open(".claude-plugin/marketplace.json") as f:
+          mp = json.load(f)
+      assert mp["name"] == "hyperdrive-bot", f"marketplace name must be 'hyperdrive-bot', got {mp['name']!r}"
+      assert isinstance(mp["plugins"], list) and len(mp["plugins"]) > 0, "no plugins registered"
+      registered = {p["name"] for p in mp["plugins"]}
+      print(f"✓ marketplace.json valid · {len(registered)} plugins registered: {sorted(registered)}")
+
+      # plugin.json for each
+      on_disk = set()
+      for pjson in glob.glob("plugins/*/.claude-plugin/plugin.json"):
+          with open(pjson) as f:
+              p = json.load(f)
+          plugin_dir = pjson.split("/")[1]
+          assert p["name"] == plugin_dir, f"{pjson}: name {p['name']!r} != directory {plugin_dir!r}"
+          assert "version" in p, f"{pjson}: missing version"
+          assert "description" in p, f"{pjson}: missing description"
+          on_disk.add(p["name"])
+
+      # registry ↔ filesystem parity
+      orphans = registered - on_disk
+      strays = on_disk - registered
+      if orphans:
+          errors.append(f"marketplace.json registers {orphans} but plugin.json missing on disk")
+      if strays:
+          errors.append(f"plugins/ contains {strays} not registered in marketplace.json")
+
+      if errors:
+          for e in errors:
+              print(f"✗ {e}", file=sys.stderr)
+          sys.exit(1)
+      print(f"✓ all {len(on_disk)} plugins have valid plugin.json + match marketplace.json")
+      PY
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# ─── deploy ──────────────────────────────────────────────────────────────────
+
+deploy:landing:
+  stage: deploy
+  needs: ["validate:manifests"]
+  environment:
+    name: production
+    url: https://cc-marketplace.hyperdrive.bot
+  before_script:
+    - apk add --no-cache git
+    - npm install -g vercel@latest
+  script:
+    - cd docs
+    - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+    - vercel build --prod --token=$VERCEL_TOKEN
+    - DEPLOY_URL=$(vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN)
+    - echo "Deployed → $DEPLOY_URL"
+    - echo "DEPLOY_URL=$DEPLOY_URL" >> deploy.env
+  artifacts:
+    reports:
+      dotenv: docs/deploy.env
+    expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "web"
+
+# ─── publish ─────────────────────────────────────────────────────────────────
+
+publish:github:
+  stage: publish
+  needs: ["deploy:landing"]
+  before_script:
+    - apk add --no-cache git
+  script:
+    - git config user.email "gitlab-runner@dev-squad.com"
+    - git config user.name "GitLab CI (claude-code-marketplace)"
+    - git remote add github "https://x-access-token:${GITHUB_PUSH_TOKEN}@github.com/hyperdrive-bot/marketplace.git"
+    - |
+      echo "Pushing $CI_COMMIT_SHA to github.com/hyperdrive-bot/marketplace main..."
+      git push github HEAD:refs/heads/main --tags
+      echo "✓ GitHub mirror synced"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "web"
