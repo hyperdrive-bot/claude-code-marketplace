@@ -35,6 +35,19 @@ workflow:
 
 image: node:22-alpine
 
+# Pin all jobs to the sa-east-1 EKS light runner. This is the same runner family
+# the api repo's quality jobs land on (eks-api/eks-live tags). It's required
+# because the shared quality-gates.yml uses mirror.gcr.io/* images which the
+# dev_squad runner config rewrites to a private ECR mirror in account 980082924943
+# — only the in-account EKS runners have IAM auth to pull from it.
+#
+# eks-runner-live-sa-east-1-light tags: [k8s, sa-east-1, eks, eks-live, code-quality, vercel, low-priority, light]
+default:
+  tags:
+    - code-quality
+    - k8s
+    - sa-east-1
+
 stages:
   - quality
   - validate
